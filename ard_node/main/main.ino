@@ -1,80 +1,61 @@
-#include "Adafruit_VL53L0X.h"
 
-Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+// es importante el orden en que se importan
+// por ejmplo, distancia.h usa una func. de comunicacion.h
+// por eso lo defino antes
+#include "config.h"
+#include "comunicacion.h"
+#include "distancia.h"
 
-// Configuraciones
-const int DIST_MAX = 1800;
-const int DIST_MIN = 30;
-const int PWM_MIN = 0;
-const int PWM_MAX = 255;
-const int VELOCIDAD = 3;
 
-// Pines
-const int PIN_LUCES = 9;  
-const int ledPin = LED_BUILTIN; // 13 en casi todos los Arduinos
+void declaracion_pines()
+{
+  pinMode(PIN_LUCES, OUTPUT);
+  pinMode(LED, OUTPUT);
+}
 
-// Declaraciones
-int ledValue = 0;
-int targetLedValue = 0;
-int distancia_rm = 0;
 
-void setup() {
+int intendidad_luces () // ES CUALQUIER REESCRIBIR, ES UN EJEMPLO ANTERIOR
+{
+  /* // remapea la distancia a un valor entre 0 y 255 para comprarlo con el pwm
+  distancia_rm = map(distance, DIST_MIN, DIST_MAX, PWM_MIN, PWM_MAX);
 
+  // Calcular valor deseado de intensidad LED
+  targetLedValue = 255 - distancia_rm;
+
+  // Ajustar intensidad LED a velocidad constante
+  if (ledValue < targetLedValue)
+  {
+    ledValue += VELOCIDAD;
+  }
+  else if (ledValue > targetLedValue && ledValue > 0)
+  {
+    ledValue -= VELOCIDAD;
+  } */
+  return 0;
+}
+
+
+void setup()
+{
   Serial.begin(115200);
 
-  if(!lox.begin()){
-    Serial.println("Failed to boot sensor");
-    while(1);
-  }
+  declaracion_pines();
 
-  lox.startRangeContinuous();
-  
-  pinMode(PIN_LUCES, OUTPUT);
-  pinMode(ledPin, OUTPUT);
+  inicio_sensor_distancia();
+
+  inicio_CAN();
+
+  Serial.print("Soy el nodo: ");
+  Serial.println(ID_NODO);
 
 }
 
-void loop() {
+void loop()
+{
 
-  if (lox.isRangeComplete()) {
-    
-    int distance = lox.readRange();
+int distancia = medir_distancia();
 
-    if (distance > DIST_MAX) {
-      distance = DIST_MAX;
-    }
-
-    if (distance <= DIST_MIN) {
-      digitalWrite(ledPin, HIGH);
-    } else {
-      digitalWrite(ledPin, LOW);
-    }
-
-    // remapea la distancia a un valor entre 0 y 255 para comprarlo con el pwm
-    distancia_rm = map(distance, DIST_MIN , DIST_MAX , PWM_MIN, PWM_MAX );
-    
-    // Calcular valor deseado de intensidad LED
-    targetLedValue = 255 - distancia_rm;
-    
-    // Ajustar intensidad LED a velocidad constante    
-    if(ledValue < targetLedValue){
-      ledValue += VELOCIDAD ;  
-    } else if(ledValue > targetLedValue && ledValue > 0){
-      ledValue -= VELOCIDAD; 
-    } 
-
-    Serial.print("d: ");
-    Serial.print(distance);
-    Serial.print(" drm: ");
-    Serial.print(distancia_rm);
-    Serial.print(" trg: ");
-    Serial.print(targetLedValue);
-    Serial.print(" pwm: ");
-    Serial.println(ledValue);
-    
-    
-    analogWrite(PIN_LUCES, ledValue);
-  
-  }
-  
 }
+
+
+
