@@ -18,4 +18,5 @@ const uint16_t ID_ERROR = 1;
 // Pines
 const int PIN_LUCES = 9;  
 const int LED = LED_BUILTIN; // 13 en casi todos los Arduinos
-const int PIN_CAN_INT = 3; // donde está conectado el pin INT del modulo CAN
+const int PIN_CAN_CS = 3; // donde está conectado el pin CS del modulo CAN
+// 

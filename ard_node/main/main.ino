@@ -40,21 +40,21 @@ void setup()
   Serial.begin(115200);
 
   declaracion_pines();
-
   inicio_sensor_distancia();
-
   inicio_CAN();
 
   Serial.print("Soy el nodo: ");
   Serial.println(ID_NODO);
 
+  enviar_mensaje(ID_NODO+1, 0x01 );
 }
 
 void loop()
 {
-
 int distancia = medir_distancia();
-
+Serial.println (distancia);
+delay (1000);
+enviar_mensaje(ID_NODO+1, 0x01 );
 }
 
 

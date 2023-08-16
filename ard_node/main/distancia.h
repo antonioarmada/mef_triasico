@@ -1,12 +1,12 @@
 #include "Adafruit_VL53L0X.h"
 
-// Sensor de distancia
+// Construyo lo necesario
 Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 
 
 void inicio_sensor_distancia ()
 {
-  bool arranca = false;
+  bool arranca = true;
     while (arranca)
     {
       digitalWrite(LED, LOW);
@@ -21,6 +21,7 @@ void inicio_sensor_distancia ()
       {
         arranca = false;
         lox.startRangeContinuous();
+        Serial.println("VL53L0X iniciado correctamente");
       }
     }
 }
