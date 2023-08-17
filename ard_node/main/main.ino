@@ -14,25 +14,36 @@ void declaracion_pines()
 }
 
 
-int intendidad_luces () // ES CUALQUIER REESCRIBIR, ES UN EJEMPLO ANTERIOR
+int calcular_intesidad (int distancia, const int DISTS[4], int DIST_lenght, const int INTS[4], int velococidad)
 {
-  /* // remapea la distancia a un valor entre 0 y 255 para comprarlo con el pwm
-  distancia_rm = map(distance, DIST_MIN, DIST_MAX, PWM_MIN, PWM_MAX);
+  static int intensidad_temporal;
+  int intensidad_target = 0;
 
-  // Calcular valor deseado de intensidad LED
-  targetLedValue = 255 - distancia_rm;
-
-  // Ajustar intensidad LED a velocidad constante
-  if (ledValue < targetLedValue)
+  // uso est tipo de estructura en vez de un simple map porque no es lineal y prefiero
+  // un control fácil de los parámetros
+  // calculo la intensidad objetivo a la que quiero llegar, pero luego lo hago paulatinamete
+  for(int i = 0; i < DIST_lenght; i++) 
   {
-    ledValue += VELOCIDAD;
+    if(distancia <= DISTS[i]) 
+    {
+      intensidad_target = INTS[i];
+      break; 
+    }
   }
-  else if (ledValue > targetLedValue && ledValue > 0)
+
+  // ajusto la intenidad temporal para alcanzar de a poco la intensidad target
+  if (intensidad_temporal < intensidad_target)
   {
-    ledValue -= VELOCIDAD;
-  } */
-  return 0;
+    intensidad_temporal += velococidad;
+  }
+  else if (intensidad_temporal > intensidad_target && intensidad_temporal > 0)
+  {
+    intensidad_temporal -= velococidad;
+  }
+
+  return intensidad_temporal;
 }
+
 
 
 void setup()
@@ -45,16 +56,32 @@ void setup()
 
   Serial.print("Soy el nodo: ");
   Serial.println(ID_NODO);
-
-  enviar_mensaje(ID_NODO+1, 0x01 );
+  
+  // espero un tiempo correspondiente con el nro de nodo
+  // para informar que se inició correctamente, es un apaño
+  // para que todos los nodos no hablen al mismo tiempo
+  delay (ID_NODO);
+  enviar_mensaje(ID_NODO + SUB_INICIADO, 0x01 );
 }
+
 
 void loop()
 {
-int distancia = medir_distancia();
-Serial.println (distancia);
-delay (1000);
-enviar_mensaje(ID_NODO+1, 0x01 );
+  static unsigned long ultima_activacion = 0;
+
+  int distancia = medir_distancia(DISTANCIAS);
+  int intensidad = calcular_intesidad(distancia, DISTANCIAS, TAMANO, INTENSIDADES, VELOCIDAD_LUCES);
+  analogWrite(PIN_LUCES, intensidad);
+
+  if (distancia <= DISTANCIAS[0] && millis()-ultima_activacion < BOUNCING_TIME)
+  {
+    Serial.println ("******* ACTIVADO ******");
+    enviar_mensaje(ID_NODO + SUB_ACTIVADO, 0x01 );
+    ultima_activacion = millis();
+
+  }
+
+  delay(10);
 }
 
 

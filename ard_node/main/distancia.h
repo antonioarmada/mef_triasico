@@ -26,7 +26,7 @@ void inicio_sensor_distancia ()
     }
 }
 
-int medir_distancia()
+int medir_distancia(const int DIST[4])  // mide la distancia, en out of range devuelve la distancia maxima definida en config.h
 {
   VL53L0X_RangingMeasurementData_t measure;
   int distancia;
@@ -41,7 +41,7 @@ int medir_distancia()
   else 
   {
     Serial.println(" out of range ");
-    distancia = DIST_MAX;
+    distancia = DIST[3];
   }
   return distancia;
 }

@@ -7,12 +7,17 @@
 // el código en un nodo nuevo
 const uint16_t ID_NODO = 100;
 
+// Sub direcciones que se le suman al ID_NODO para identificar una funcion
+// del mensaje (ID_NODO + SUB INICIADO) = 100 + 1 = 101 para mensaje de estado del nodo 100
+const int SUB_INICIADO = 1;   // se envia al iniciar
+const int SUB_ACTIVADO = 2;
+
 // Configuraciones de uso
-const int DIST_MAX = 1800;
-const int DIST_MIN = 30;
-const int PWM_MIN = 0;
-const int PWM_MAX = 255;
-const int VELOCIDAD = 3;
+const int TAMANO = 4;                                           // para asegurarme que tienen el mismo tamaño
+int DISTANCIAS[TAMANO] =    {   5,     500,    1200,  1800 };   // [mm] valor 0, minimo de activación, valor 3 maximo apagado
+int INTENSIDADES[TAMANO] =  {   255,   255,    100,   0    };   // [0-255] corresponde una INTENSIDAD a una DISTANCIA, same length
+const int VELOCIDAD_LUCES = 1;
+const long BOUNCING_TIME = 10 *1000; // millis que espera entre una activación y otra  
 const uint16_t ID_ERROR = 1;
 
 // Pines
