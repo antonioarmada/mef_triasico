@@ -14,7 +14,7 @@ const int SUB_ACTIVADO = 2;
 
 // Configuraciones de uso
 const int TAMANO = 4;                                           // para asegurarme que tienen el mismo tamaño
-int DISTANCIAS[TAMANO] =    {   5,     500,    1200,  1800 };   // [mm] valor 0, minimo de activación, valor 3 maximo apagado
+int DISTANCIAS[TAMANO] =    {   30,     500,    1200,  1800 };   // [mm] valor 0, minimo de activación, valor 3 maximo apagado
 int INTENSIDADES[TAMANO] =  {   255,   255,    100,   0    };   // [0-255] corresponde una INTENSIDAD a una DISTANCIA, same length
 const int VELOCIDAD_LUCES = 1;
 const long BOUNCING_TIME = 10 *1000; // millis que espera entre una activación y otra  

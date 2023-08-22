@@ -73,7 +73,7 @@ void loop()
   int intensidad = calcular_intesidad(distancia, DISTANCIAS, TAMANO, INTENSIDADES, VELOCIDAD_LUCES);
   analogWrite(PIN_LUCES, intensidad);
 
-  if (distancia <= DISTANCIAS[0] && millis()-ultima_activacion < BOUNCING_TIME)
+  if (distancia <= DISTANCIAS[0] && millis()-ultima_activacion > BOUNCING_TIME)
   {
     Serial.println ("******* ACTIVADO ******");
     enviar_mensaje(ID_NODO + SUB_ACTIVADO, 0x01 );
