@@ -73,6 +73,8 @@ void loop()
   int intensidad = calcular_intesidad(distancia, DISTANCIAS, TAMANO, INTENSIDADES, VELOCIDAD_LUCES);
   analogWrite(PIN_LUCES, intensidad);
 
+  // aca hacer tambien que tengas que tener "presionado" un tiempo tambien, para filtrar un error
+  // que aparece cada tanto (i2c cable largo?)
   if (distancia <= DISTANCIAS[0] && millis()-ultima_activacion > BOUNCING_TIME)
   {
     Serial.println ("******* ACTIVADO ******");

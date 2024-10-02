@@ -5,9 +5,9 @@
 #include <SPI.h>
 #include <mcp2515.h>
 
-#define led 3
+#define led 13
 struct can_frame canMsg;
-MCP2515 mcp2515(10);
+MCP2515 mcp2515(3);
 
 void setup() {
   Serial.begin(115200);

@@ -10,7 +10,7 @@ const uint16_t ID_NODO = 100;
 // Sub direcciones que se le suman al ID_NODO para identificar una funcion
 // del mensaje (ID_NODO + SUB INICIADO) = 100 + 1 = 101 para mensaje de estado del nodo 100
 const int SUB_INICIADO = 1;   // se envia al iniciar
-const int SUB_ACTIVADO = 2;
+const int SUB_ACTIVADO = 2;   // se envia al activarse
 
 // Configuraciones de uso
 const int TAMANO = 4;                                           // para asegurarme que tienen el mismo tamaño
@@ -22,6 +22,8 @@ const uint16_t ID_ERROR = 1;
 
 // Pines
 const int PIN_LUCES = 9;  
-const int LED = LED_BUILTIN; // 13 en casi todos los Arduinos
-const int PIN_CAN_CS = 3; // donde está conectado el pin CS del modulo CAN
-// 
+const int LED = LED_BUILTIN;   // 13 en casi todos los Arduinos
+const int PIN_CAN_CS = 3;      // donde está conectado el pin CS del modulo CAN
+// Sensor
+// SDA 
+// SDL 
