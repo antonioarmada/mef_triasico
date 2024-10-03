@@ -10,7 +10,7 @@ class VideoPlayer:
         self.n_frames = self.reader.get_length()  # Total number of frames
         self.fps = self.reader.get_meta_data()['fps']  # Frames per second
         self.current_frame_index = 0
-        self.visible = True
+        self.visible = False
         
         # Load the first frame and flip it vertically
         self.first_frame = self.reader.get_data(self.current_frame_index)
@@ -19,9 +19,11 @@ class VideoPlayer:
         self.texture = pyglet.image.ImageData(width, height, 'RGB', self.first_frame.tobytes())
         
     def play(self):
+        self.visible = True
         pyglet.clock.schedule_interval(self.update, 1 / self.fps)  # Schedule updates
 
     def restart(self):
+        self.visible = True
         self.current_frame_index = 0
         pyglet.clock.schedule_interval(self.update, 1 / self.fps)
 

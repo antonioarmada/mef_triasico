@@ -10,4 +10,14 @@ fullscreen: False
 
 
 # Debug parameters
+debug: True
 exclusive_mouse: False       # True: hide the mouse and use exclusively in this windows
+
+# Stations parameters
+position_1: [50,200]
+position_2: [350,200]
+position_3: [650,200]
+position_4: [950,200]
+position_5: [1250,200]
+position_6: [1550,200]
+
