@@ -1,0 +1,14 @@
+
+# Serial parameters
+port: "/dev/tty.usbserial-A50285BI"
+baudrate: 115200
+no_serial: False
+
+# Projector parameters
+resolution: [1920,1080]
+full_screen: True
+
+
+# Debug parameters
+exclusive_mouse: False       # True: hide the mouse and use exclusively in this windows
+ 
