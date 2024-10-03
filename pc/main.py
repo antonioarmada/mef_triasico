@@ -5,6 +5,7 @@ import pyglet
 from pyglet.window import Window
 from pyglet.image import load
 
+from modules.videoplayer import  VideoPlayer as vp
 
 # read config.yaml
 with open("config.yaml") as f:
@@ -28,17 +29,19 @@ window = Window(width=cfg['resolution'][0], height=cfg['resolution'][1])
 window.set_fullscreen(cfg['fullscreen'])
 window.set_exclusive_mouse(cfg['exclusive_mouse'])
 
-# Load the image
-image = load('assets/background.jpg') 
-sprite = pyglet.sprite.Sprite(image)
+# Create instances of VideoPlayer for different videos
+video_player1 = vp('assets/boton_01.mp4',(0,0))  # Adjust the path as needed
+video_player2 = vp('assets/boton_02.mp4',(400,0))  # Adjust the path as needed
 
-# Scale the sprite to fit the screen
-sprite.scale = min(window.width / sprite.width, window.height / sprite.height)
+# Start playing the first video
+video_player1.play()
+video_player2.play()  # You can play multiple videos simultaneously
 
 @window.event
 def on_draw():
     window.clear()
-    sprite.draw()
+    video_player1.draw()
+    video_player2.draw()  # Draw the second video
 
 def update(dt):
     # Read serial data
@@ -47,8 +50,6 @@ def update(dt):
             line = ser.readline()
             print(line)
 
-# Schedule the update function
-pyglet.clock.schedule_interval(update, 1/60.0)
 
 # Run the Pyglet app
 pyglet.app.run()
