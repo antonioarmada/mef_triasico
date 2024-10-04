@@ -8,12 +8,8 @@ from pyglet.image import load
 from pyglet import text
 from pyglet.clock import schedule_interval
 
-
 import threading
 import queue
-
-
-
 
 from modules.videoplayer import  VideoPlayer as vp
 from modules.logview import LogView
@@ -28,7 +24,6 @@ log_view = LogView(position=(cfg['logview_position'][0],cfg['logview_position'][
 
 # set serial port settings
 no_serial = cfg['no_serial']  
-  
 try:
     if no_serial:
         ser = None
@@ -41,7 +36,6 @@ except:
     print(f"Serial port error: {sys.exc_info()[1]}")
     log_view.add_log_line(f"Serial port error! {sys.exc_info()[1]}")
     no_serial = True
-
 time.sleep(2)
 
 #Create a queue for serial data
@@ -121,8 +115,28 @@ def on_draw():
 def update(dt):
     while not serial_queue.empty():
         line = serial_queue.get()
-        print(f"Processed serial data: {line}")  # Modify this line
+        try:
+            # Parse the serial data
+            data = int(line)
+            video_id = data // 100  # Get the first digit
+            action = data % 10      # Get the last digit
+            
+            # Map video ID to video player
+            video_player = video_players.get(getattr(key, f"_{video_id}"))
+            
+            if video_player and action == 2:
+                video_player.restart()
+                video_player.visible = True
+                log_view.add_log_line(f"Playing video {video_id}")
+            else:
+                log_view.add_log_line(f"Invalid video ID or action: {data}")
+        except ValueError:
+            log_view.add_log_line(f"Invalid serial data format: {line}")
+        
+        print(f"Processed serial data: {line}")
         log_view.add_log_line(f"Serial: {line}")
+
+schedule_interval(update, 1/30.0)  # Call update 30 times per second
 
 schedule_interval(update, 1/30.0)  # Call update 30 times per second
 
