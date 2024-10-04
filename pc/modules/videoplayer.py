@@ -11,7 +11,7 @@ class VideoPlayer:
         self.fps = self.reader.get_meta_data()['fps']  # Frames per second
         self.current_frame_index = 0
         self.visible = False
-        
+   
         # Load the first frame and flip it vertically
         self.first_frame = self.reader.get_data(self.current_frame_index)
         self.first_frame = np.flipud(self.first_frame)  # Flip the frame vertically

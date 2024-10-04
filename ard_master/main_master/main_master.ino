@@ -12,7 +12,7 @@ MCP2515 mcp2515(3);
 void setup() {
   Serial.begin(115200);
   //Serial.println("Hola CAN Rx");
-  Serial.print("001");
+  Serial.println("001");
 
   mcp2515.reset();
   mcp2515.setBitrate(CAN_125KBPS);
@@ -24,7 +24,7 @@ void setup() {
 void loop() {
   if (mcp2515.readMessage(&canMsg) == MCP2515::ERROR_OK) {
     //Serial.print("ID Recibido: ");
-    Serial.print(canMsg.can_id); // Imprime el ID
+    Serial.println(canMsg.can_id); // Imprime el ID
     
     //Serial.print("recibo: ");
     //Serial.println(canMsg.data[0]);

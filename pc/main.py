@@ -2,29 +2,68 @@ import serial
 import time
 import yaml
 import pyglet
+import sys
 from pyglet.window import Window, key
 from pyglet.image import load
 from pyglet import text
+from pyglet.clock import schedule_interval
+
+
+import threading
+import queue
+
+
 
 
 from modules.videoplayer import  VideoPlayer as vp
+from modules.logview import LogView
+
 
 # read config.yaml
 with open("config.yaml") as f:
     cfg = yaml.load(f, Loader=yaml.FullLoader)
 
+# Create a LogView instance   
+log_view = LogView(position=(cfg['logview_position'][0],cfg['logview_position'][1]), visible=True, color=cfg['logview_color'], num_lines=cfg['logview_lines'])
+
 # set serial port settings
-no_serial = cfg['no_serial']    
+no_serial = cfg['no_serial']  
+  
 try:
     if no_serial:
         ser = None
+        log_view.add_log_line("Serial skipped: no_serial=True")
     else:
         ser = serial.Serial(cfg['port'], cfg['baudrate'])
+        ser.reset_input_buffer()
+        log_view.add_log_line("OK: Serial port opened")
 except:
-    print("Serial port not found")
+    print(f"Serial port error: {sys.exc_info()[1]}")
+    log_view.add_log_line(f"Serial port error! {sys.exc_info()[1]}")
     no_serial = True
 
 time.sleep(2)
+
+#Create a queue for serial data
+serial_queue = queue.Queue()
+
+# Thread function for reading serial data
+def read_serial():
+    print("Serial reading thread started")
+    while True:
+        if ser and ser.in_waiting:
+            try:
+                line = ser.readline().decode('utf-8').strip()
+                serial_queue.put(line)
+            except serial.SerialException as e:
+                print(f"Serial error: {e}")
+        time.sleep(1)  # Increase sleep time for less frequent checks
+
+# Start the serial reading thread
+if not no_serial:
+    serial_thread = threading.Thread(target=read_serial, daemon=True)
+    serial_thread.start()
+    print("Thread started")
 
 # Create a Pyglet window
 window = Window(width=cfg['resolution'][0], height=cfg['resolution'][1])
@@ -35,6 +74,8 @@ mouse_debug_label = None
 if cfg['debug']:
     mouse_debug_label = text.Label('Mouse: (0, 0)', font_name='Arial', font_size=14,
                              x=10, y=window.height - 10, anchor_y='top')
+
+
 
 # Create instances of VideoPlayer for different videos
 video_player1 = vp('assets/station_01.mp4',(cfg['position_1'][0],cfg['position_2'][1]))
@@ -61,7 +102,7 @@ def on_mouse_motion(x, y, dx, dy):
 
 @window.event
 def on_key_press(symbol, modifiers):
-    print(f"Key pressed: {symbol}")
+    log_view.add_log_line("key pressed: " + str(symbol))
     if symbol in video_players:
         # Play the selected video
         selected_player = video_players[symbol]
@@ -75,14 +116,15 @@ def on_draw():
         player.draw()
     if cfg['debug']:
         mouse_debug_label.draw()
+        log_view.draw()
 
 def update(dt):
-    # Read serial data
-    if not no_serial:
-        if ser.inWaiting() > 0:
-            line = ser.readline()
-            print(line)
+    while not serial_queue.empty():
+        line = serial_queue.get()
+        print(f"Processed serial data: {line}")  # Modify this line
+        log_view.add_log_line(f"Serial: {line}")
 
+schedule_interval(update, 1/30.0)  # Call update 30 times per second
 
 # Run the Pyglet app
 pyglet.app.run()

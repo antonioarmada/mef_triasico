@@ -13,7 +13,7 @@ void inicio_sensor_distancia ()
       if (!lox.begin())
       {
         Serial.println("Fallo al iniciar el VL53L0X");
-        enviar_mensaje(ID_NODO+ID_ERROR, 1);
+        enviar_mensaje(ID_NODO + SUB_ERROR, 0x01 );
         digitalWrite(LED, HIGH);
         delay(2000);
       }
