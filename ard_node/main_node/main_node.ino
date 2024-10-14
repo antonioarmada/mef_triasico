@@ -1,4 +1,5 @@
 
+
 // es importante el orden en que se importan
 // por ejmplo, distancia.h usa una func. de comunicacion.h
 // por eso lo defino antes
@@ -48,20 +49,27 @@ int calcular_intesidad (int distancia, const int DISTS[4], int DIST_lenght, cons
 
 void setup()
 {
-  Serial.begin(115200);
-
   declaracion_pines();
-  inicio_sensor_distancia();
-  inicio_CAN();
-
-  Serial.print("Soy el nodo: ");
-  Serial.println(ID_NODO);
   
+  Serial.begin(115200);
   // espero un tiempo correspondiente con el nro de nodo
   // para informar que se inició correctamente, es un apaño
   // para que todos los nodos no hablen al mismo tiempo
-  delay (ID_NODO);
+  delay(ID_NODO * 10); // Dar tiempo al Serial para inicializarse  
+  Serial.println("Iniciando dispositivo..."); 
+  Serial.print("Soy el nodo: ");
+  Serial.println(ID_NODO);
+
+  // Intentar inicializar CAN - se bloqueará aquí si falla
+  while (!inicio_CAN()) {
+        Serial.println("Fallo en la inicialización CAN. El dispositivo no puede continuar.");
+        delay(5000); // Esperar 5 segundos antes de reintentar
+  }
+    
   enviar_mensaje(ID_NODO + SUB_INICIADO, 0x01 );
+
+  inicio_sensor_distancia();
+ 
 }
 
 
@@ -85,6 +93,3 @@ void loop()
 
   delay(10);
 }
-
-
-

@@ -5,7 +5,7 @@
 // para los mensajes: Nodo 1 (100,199), Nodo 2 (200,299)
 // hay que cambiar este valor cada vez que se cargue 
 // el código en un nodo nuevo
-const uint16_t ID_NODO = 100;
+const uint16_t ID_NODO = 200;
 
 // Sub direcciones que se le suman al ID_NODO para identificar una funcion
 // del mensaje (ID_NODO + SUB INICIADO) = 100 + 1 = 101 para mensaje de estado del nodo 100
@@ -24,6 +24,8 @@ const long BOUNCING_TIME = 10 *1000; // millis que espera entre una activación 
 const int PIN_LUCES = 9;  
 const int LED = LED_BUILTIN;   // 13 en casi todos los Arduinos
 const int PIN_CAN_CS = 3;      // donde está conectado el pin CS del modulo CAN
+// INT a D2 
+
 // Sensor
-// SDA 
-// SDL 
+// SDA: A5
+// SDL: A4
