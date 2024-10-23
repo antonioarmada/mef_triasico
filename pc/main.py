@@ -106,6 +106,10 @@ def on_key_press(symbol, modifiers):
 @window.event
 def on_draw():
     window.clear()
+    # set the window background color purple
+    if cfg['test_background_color']:
+        pyglet.gl.glClearColor(0.5, 0.0, 0.5, 1.0)
+
     for player in video_players.values():
         player.draw()
     if cfg['debug']:

@@ -1,14 +1,14 @@
 
 # Serial parameters
 # NOTE: it's important to use Serial.println("..") in the Arduino code instead Serial.print because ser.readline() expect a "/n" character
-port: "/dev/tty.usbserial-A50285BI"
+port: "/dev/tty.usbserial-A50285BI" # "COM3"
 baudrate: 115200
 no_serial: False          # True: skip serial for debug, False: Arduino+CAN master are connected 
 
 
 # Projector parameters
 resolution: [1920,1080]
-fullscreen: False
+fullscreen: True
 
 
 # Debug parameters
@@ -17,6 +17,7 @@ exclusive_mouse: False      # True: hide the mouse and use exclusively in this w
 logview_lines: 3            # Number of lines to display in the log view
 logview_position: [10,990]
 logview_color: [255,255,0] 
+test_background_color: True
 
 # Stations parameters
 position_1: [50,200]
