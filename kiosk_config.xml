@@ -1,0 +1,23 @@
+ <?xml version="1.0" encoding="utf-8" ?>
+<AssignedAccessConfiguration
+    xmlns="http://schemas.microsoft.com/AssignedAccess/2017/config"
+    xmlns:rs5="http://schemas.microsoft.com/AssignedAccess/201810/config"
+>
+    <Profiles>
+        <Profile Id="{9A2A490F-10F6-4764-974A-43B19E722C23}">
+            <AllowedApps>
+                <App AppUserModelId="Microsoft.Windows.Explorer" />
+                <App DesktopAppPath="C:\Windows\System32\cmd.exe" />
+                <App DesktopAppPath="C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" />
+                <App DesktopAppPath="C:\Users\Triasico\Documents\interactivo\vTria\Scripts\python.exe" />
+                <App DesktopAppPath="C:\Users\Triasico\Documents\interactivo\mef_triasico\inicio_windows.bat" />
+            </AllowedApps>
+        </Profile>
+    </Profiles>
+    <Configs>
+        <Config>
+            <AutoLogonAccount />
+            <DefaultProfile Id="{9A2A490F-10F6-4764-974A-43B19E722C23}"/>
+        </Config>
+    </Configs>
+</AssignedAccessConfiguration>
